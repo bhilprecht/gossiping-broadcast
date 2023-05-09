@@ -19,6 +19,8 @@ namespace message
         ReadOk,
         Topology,
         TopologyOk,
+        Gossip,
+        GossipOk,
         Invalid
     };
 
@@ -31,6 +33,8 @@ namespace message
                                                   {ReadOk, "read_ok"},
                                                   {Topology, "topology"},
                                                   {TopologyOk, "topology_ok"},
+                                                  {Gossip, "gossip"},
+                                                  {GossipOk, "gossip_ok"},
                                                   {Invalid, nullptr},
                                               })
 
@@ -53,5 +57,9 @@ namespace message
         MessageType const &get_type() const;
 
         json const &get_body() const;
+
+        std::string const& get_src() const;
+
+        std::string const& get_dest() const;
     };
 }

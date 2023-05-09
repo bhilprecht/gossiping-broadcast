@@ -42,4 +42,14 @@ namespace message
     {
         return type;
     }
+
+    std::string const& Message::get_src() const
+    {
+        return src;
+    }
+
+    std::string const& Message::get_dest() const
+    {
+        return dest;
+    }
 }
