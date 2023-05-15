@@ -18,6 +18,7 @@ namespace node
         size_t msg_id = 1;
         std::string node_id;
         std::vector<std::string> node_ids;
+        std::mutex write_mtx;
         std::unordered_map<std::string, std::vector<std::string>> topology;
         std::vector<std::string> neighbors;
 

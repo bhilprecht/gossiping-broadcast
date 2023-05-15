@@ -52,7 +52,7 @@ namespace message
         static std::unique_ptr<Message> parse(std::string line);
         std::unique_ptr<Message> generate_response(MessageType &type, size_t msg_id, json &body);
 
-        void send();
+        void send(std::mutex &write_mtx);
 
         MessageType const &get_type() const;
 

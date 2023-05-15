@@ -22,13 +22,17 @@ namespace message
         return std::unique_ptr<Message>(new Message(dest, src, type, body));
     }
 
-    void Message::send()
+    void Message::send(std::mutex &write_mtx)
     {
         json js = {
             {"src", src},
             {"dest", dest},
             {"body", body},
         };
+        // Synchronize the sending by acquiring a mutex
+        // This is necessary because otherwise messages 
+        // will overlap.
+        std::lock_guard<std::mutex> guard(write_mtx);
         std::cerr << "Sending: " << js << std::endl;
         std::cout << js << std::endl;
     }

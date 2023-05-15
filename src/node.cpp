@@ -19,7 +19,7 @@ namespace node
                 {"msg_id", msg_id}};
 
             auto m = message::Message(node_id, n, type, body);
-            m.send();
+            m.send(write_mtx);
         }
     }
 
@@ -36,8 +36,13 @@ namespace node
             json body_resp = {};
             auto type = message::MessageType::InitOk;
             auto m_resp = m.generate_response(type, get_msg_id(), body_resp);
-            m_resp->send();
+            m_resp->send(write_mtx);
 
+            break;
+        }
+        case message::MessageType::InitOk:
+        {
+            // ignored 
             break;
         }
         case message::MessageType::Topology:
@@ -48,8 +53,13 @@ namespace node
             json body_resp = {};
             auto type = message::MessageType::TopologyOk;
             auto m_resp = m.generate_response(type, get_msg_id(), body_resp);
-            m_resp->send();
+            m_resp->send(write_mtx);
 
+            break;
+        }
+        case message::MessageType::TopologyOk:
+        {
+            // ignored 
             break;
         }
         case message::MessageType::Broadcast:
@@ -60,8 +70,13 @@ namespace node
             json body_resp = {};
             auto type = message::MessageType::BroadcastOk;
             auto m_resp = m.generate_response(type, get_msg_id(), body_resp);
-            m_resp->send();
+            m_resp->send(write_mtx);
 
+            break;
+        }
+        case message::MessageType::BroadcastOk:
+        {
+            // ignored 
             break;
         }
         case message::MessageType::Read:
@@ -69,8 +84,13 @@ namespace node
             json body_resp = {{"messages", this->messages}};
             auto type = message::MessageType::ReadOk;
             auto m_resp = m.generate_response(type, get_msg_id(), body_resp);
-            m_resp->send();
+            m_resp->send(write_mtx);
 
+            break;
+        }
+        case message::MessageType::ReadOk:
+        {
+            // ignored 
             break;
         }
         case message::MessageType::Gossip:
@@ -88,7 +108,7 @@ namespace node
             json body_resp = {
                 {"messages", messages}};
             auto m_resp = m.generate_response(type, get_msg_id(), body_resp);
-            m_resp->send();
+            m_resp->send(write_mtx);
 
             break;
         }
@@ -100,7 +120,11 @@ namespace node
                 // the sending node knows the message
                 register_knows(m.get_src(), message);
             }
-
+            break;
+        }
+        case message::MessageType::Invalid:
+        {
+            std::cerr << "Received invalid message" << std::endl;
             break;
         }
         }
