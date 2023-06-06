@@ -7,7 +7,7 @@
 
 int main(void)
 {
-    std::unique_ptr<node::Node> n = std::unique_ptr<node::Node>(new node::Node());
+    std::unique_ptr<node::Node> n = std::unique_ptr<node::Node>(new node::Node(4));
 
     // spawn the background job
     std::cerr << "Init gossip thread... " << std::endl;
@@ -17,9 +17,7 @@ int main(void)
     {
         // Log message using std::cerr as described in protocol
         std::cerr << "Received msg: " << line << std::endl;
-
-        auto m = message::Message::parse(line);
-        n->handle(*m);
+        n->process_message(line);
     }
     return 0;
 }
